@@ -4,14 +4,22 @@ import 'package:provider/provider.dart';
 import './screens/product_overview_screen.dart';
 import './screens/product_details_screen.dart';
 import './providers/products.dart';
+import './providers/cart.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: Products(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          builder: (ctx) => Products(),
+        ),
+        ChangeNotifierProvider(
+          builder: (ctx) => Cart(),
+        ),
+      ],
       child: MaterialApp(
           title: 'MyShop',
           theme: ThemeData(
@@ -32,10 +40,14 @@ class MyApp extends StatelessWidget {
 //       builder: (ctx) => Products(),
 
 // Approach 2:
-  // return ChangeNotifierProvider.value(
-  //     value: Products(),
+// return ChangeNotifierProvider.value(
+//     value: Products(),
 
 //  Approach 2 we use if provider is part of list or grid otherwise Approach 1
-// because where data changes in provider there build method doesnt works properly can therefore we use approach2 with list and. 
+// because where data changes in provider there build method doesnt works properly can therefore we use approach2 with list and.
 
 
+// ChangeNotifierProvider(
+//           builder: (ctx) => Products(),
+
+// Here use 'create' instead of 'builder' if provider version is ^4.0.0
