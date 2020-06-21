@@ -10,8 +10,8 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      builder: (ctx) => Products(),
+    return ChangeNotifierProvider.value(
+      value: Products(),
       child: MaterialApp(
           title: 'MyShop',
           theme: ThemeData(
@@ -26,3 +26,16 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// Approach 1:
+// return ChangeNotifierProvider(
+//       builder: (ctx) => Products(),
+
+// Approach 2:
+  // return ChangeNotifierProvider.value(
+  //     value: Products(),
+
+//  Approach 2 we use if provider is part of list or grid otherwise Approach 1
+// because where data changes in provider there build method doesnt works properly can therefore we use approach2 with list and. 
+
+
