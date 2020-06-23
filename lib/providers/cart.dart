@@ -56,4 +56,9 @@ int get itemCount{
     _items.remove(productId);
     notifyListeners();
   }
+
+  void clear(){
+    _items = {};
+    notifyListeners();
+  }
 }
