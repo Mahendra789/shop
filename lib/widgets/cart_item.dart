@@ -62,13 +62,13 @@ class CartItem extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(5),
                 child: FittedBox(
-                  child: Text('₹ ${price}'),
+                  child: Text('₹ $price'),
                 ),
               ),
             ),
             title: Text(title),
             subtitle: Text('Total ₹ ${(price * quantity)}'),
-            trailing: Text('₹ ${quantity} X'),
+            trailing: Text('₹ $quantity X'),
           ),
         ),
       ),
