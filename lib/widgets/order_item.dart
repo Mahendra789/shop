@@ -43,8 +43,9 @@ class _OrderItemState extends State<OrderItem> {
                 children: widget.order.products
                     .map(
                       (prod) => Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                              child: Row(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(

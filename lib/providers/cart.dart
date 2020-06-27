@@ -19,25 +19,33 @@ class Cart with ChangeNotifier {
     return {..._items};
   }
 
-  double get totalAmount{
+  double get totalAmount {
     double _total = 0.0;
     _items.forEach((key, cartItem) {
       _total += cartItem.quantity * cartItem.price;
-     });
+    });
     return _total;
   }
 
-int get itemCount{
-  return _items.length;
-}
-  void addItems(String productId, double price,  String title,) {
+  int get itemCount {
+    return _items.length;
+  }
+
+  void addItems(
+    String productId,
+    double price,
+    String title,
+  ) {
     if (_items.containsKey(productId)) {
-      _items.update(productId, (existingCartItem) => CartItem(
+      _items.update(
+        productId,
+        (existingCartItem) => CartItem(
           id: DateTime.now().toString(),
           title: existingCartItem.title,
-          quantity: existingCartItem.quantity+1,
+          quantity: existingCartItem.quantity + 1,
           price: existingCartItem.price,
-        ),);
+        ),
+      );
     } else {
       _items.putIfAbsent(
         productId,
@@ -52,13 +60,32 @@ int get itemCount{
     notifyListeners();
   }
 
-  void removeItem(String productId){
+  void removeItem(String productId) {
     _items.remove(productId);
     notifyListeners();
   }
 
-  void clear(){
+  void clear() {
     _items = {};
+    notifyListeners();
+  }
+
+  void removeSingleItem(String productId) {
+    if (!_items.containsKey(productId)) {
+      return;
+    }
+    if (_items[productId].quantity > 1) {
+      _items.update(
+        productId,
+        (existingItem) => CartItem(
+            id: existingItem.id,
+            title: existingItem.title,
+            quantity: existingItem.quantity - 1,
+            price: existingItem.price),
+      );
+    } else {
+      _items.remove(productId);
+    }
     notifyListeners();
   }
 }
