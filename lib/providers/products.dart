@@ -58,9 +58,14 @@ class Products with ChangeNotifier {
     if(index>=0){
       _items[index] = product;
     }else{
-      
+
     }
     notifyListeners();
+  }
+
+  void deleteProduct(String id){
+     _items.removeWhere((product) => product.id == id);
+     notifyListeners();
   }
 
   List<Product> get favoriteItems {
