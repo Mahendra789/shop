@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import './product.dart';
 
-class Products with ChangeNotifier{
-
+class Products with ChangeNotifier {
   List<Product> _items = [
     Product(
       id: 'p1',
@@ -39,20 +38,22 @@ class Products with ChangeNotifier{
     ),
   ];
 
-  List<Product> get items{
+  List<Product> get items {
     return [..._items];
   }
 
-  Product findById(String id){
+  Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  void addProduct(value){
-    // _items.add(value);
-    notifyListeners();
+  void addProduct(Product product) {
+    final _newProduct = Product(
+        id: DateTime.now().toString(), title: product.title, description: product.description, price: product.price, imageUrl: product.imageUrl);
+    _items.add(_newProduct);
+     notifyListeners();
   }
 
-    List<Product> get favoriteItems{
-      return _items.where((item) => item.isFavorites).toList();
-    }
+  List<Product> get favoriteItems {
+    return _items.where((item) => item.isFavorites).toList();
+  }
 }
