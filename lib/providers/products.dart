@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import './product.dart';
+import './../models/httpException.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [
@@ -120,9 +121,23 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((product) => product.id == id);
+  void deleteProduct(String id) async {
+    final url = 'https://flutter-shop-20bd9.firebaseio.com/products/$id.';
+    final _existingProductIndex =
+        _items.indexWhere((product) => product.id == id);
+    var _existingProduct = _items[_existingProductIndex];
+    _items.removeAt(_existingProductIndex);
     notifyListeners();
+
+    final response = await http.delete(url);
+
+    if (response.statusCode >= 400) {
+      _items.insert(_existingProductIndex, _existingProduct);
+      notifyListeners();
+      throw HttpException('Cant delete product');
+    }
+
+    _existingProduct = null;
   }
 
   List<Product> get favoriteItems {
