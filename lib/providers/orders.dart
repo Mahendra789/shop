@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import './cart.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class OrderItem with ChangeNotifier {
   final String id;
@@ -22,16 +24,36 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
-  void addOrder(List<CartItem> cartProducts, double total) {
-    _orders.insert(
-      0,
-      OrderItem(
-          id: DateTime.now().toString(),
-          amount: total,
-          dateTime: DateTime.now(),
-          products: cartProducts),
-    );
-    notifyListeners();
-  }
+  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
+    final url = 'https://flutter-shop-20bd9.firebaseio.com/orders.json';
+    final timestamp = DateTime.now();
 
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode({
+          'amount': total,
+          'dateTime': timestamp.toIso8601String(),
+          'products': cartProducts
+              .map((data) => {
+                    'id': data.id,
+                    'title': data.title,
+                    'price': data.price,
+                    'quantity': data.quantity,
+                  })
+              .toList(),
+        }),
+      );
+
+      _orders.insert(
+        0,
+        OrderItem(
+            id: json.decode(response.body)['name'],
+            amount: total,
+            dateTime: DateTime.now(),
+            products: cartProducts),
+      );
+      notifyListeners();
+    } catch (error) {}
+  }
 }

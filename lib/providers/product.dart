@@ -35,15 +35,12 @@ class Product with ChangeNotifier {
         url,
         body: json.encode({'isFavorites': isFavorites}),
       );
-      print(response.statusCode);
-      print(response.body);
 
       if (response.statusCode >= 400) {
         _updateStatus(oldStatus);
       }
     } catch (error) {
       _updateStatus(oldStatus);
-      print(error);
     }
   }
 }
