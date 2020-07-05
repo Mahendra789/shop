@@ -49,8 +49,13 @@ class Products with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
+  final String authToken;
+
+  Products(this.authToken, this._items);
+
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://flutter-shop-20bd9.firebaseio.com/products.json';
+    final url =
+        'https://flutter-shop-20bd9.firebaseio.com/products.json?auth=$authToken';
     try {
       final response = await http.get(url);
 
@@ -74,7 +79,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url = 'https://flutter-shop-20bd9.firebaseio.com/products.json';
+    final url =
+        'https://flutter-shop-20bd9.firebaseio.com/products.json?auth=$authToken';
 
     try {
       final response = await http.post(
@@ -102,7 +108,8 @@ class Products with ChangeNotifier {
   }
 
   void updateProduct(String id, Product product) async {
-    final url = 'https://flutter-shop-20bd9.firebaseio.com/products/$id.json';
+    final url =
+        'https://flutter-shop-20bd9.firebaseio.com/products/$id.json?auth=$authToken';
 
     await http.patch(url,
         body: json.encode({
@@ -119,7 +126,8 @@ class Products with ChangeNotifier {
   }
 
   void deleteProduct(String id) async {
-    final url = 'https://flutter-shop-20bd9.firebaseio.com/products/$id.';
+    final url =
+        'https://flutter-shop-20bd9.firebaseio.com/products/$id.json?auth=$authToken';
     final _existingProductIndex =
         _items.indexWhere((product) => product.id == id);
     var _existingProduct = _items[_existingProductIndex];
